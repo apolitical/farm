@@ -3,7 +3,7 @@ version: "1.0"
 author: Daniel Mason <engineering@apolitical.co>
 about: Finds and replaces in all columns of all tables in a given database
 args:
-- config:
+- database:
     short: d
     long: database
     value_name: DATABASE
