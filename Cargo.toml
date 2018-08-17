@@ -7,3 +7,4 @@ authors = ["Daniel Mason"]
 clap = {version = "^2.27.0", features = ["yaml"]}
 diesel = { version = "^1.3", features = ["mysql"] }
 failure = "^0.1.1"
+mysql = "^14.0.0"
