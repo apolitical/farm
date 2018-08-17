@@ -1,21 +1,26 @@
 #[macro_use]
 extern crate failure;
-#[macro_use]
 extern crate mysql;
+extern crate r2d2;
+extern crate r2d2_mysql;
 
 pub mod error;
 pub mod model;
 
+use r2d2::Pool;
+use r2d2_mysql::MysqlConnectionManager;
+
 use model::column::Column;
 use error::Result;
-use mysql::Pool;
 
-fn get_db_connection<T>(database_url: T) -> Result<Pool>
+fn get_db_connection<T>(database_url: T) -> Result<Pool<MysqlConnectionManager>>
     where T: AsRef<str>
 {
-    // ToDo: Test for `?` in string and use `&` instead or find a better way to set the option
-    let url = format!("{}?prefer_socket=false", database_url.as_ref());
-    Ok(mysql::Pool::new(url)?)
+    let mut opts_builder = mysql::OptsBuilder::from_opts(database_url.as_ref());
+    opts_builder.prefer_socket(false);
+    let manager = MysqlConnectionManager::new(opts_builder);
+    let pool = Pool::builder().max_size(15).build(manager)?;
+    Ok(pool)
 }
 
 pub fn get_affected_columns<T, U>(database_url: T, find: U) -> Result<Vec<Column>>
@@ -25,7 +30,9 @@ pub fn get_affected_columns<T, U>(database_url: T, find: U) -> Result<Vec<Column
     let pool = get_db_connection(database_url)?;
 
     // ToDo: Use mysql::Opts to work out schema name.
-    let possible_columns: Vec<Column> = pool.prep_exec("SELECT TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH FROM information_schema.columns where TABLE_SCHEMA = 'wordpress';", ())
+    let mut connection = pool.get()?;
+    let possible_columns: Vec<Column> = connection
+        .prep_exec("SELECT TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH FROM information_schema.columns where TABLE_SCHEMA = 'wordpress';", ())
         .map(|result| {
             result
                 .filter(|row_result| row_result.is_ok())

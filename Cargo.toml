@@ -7,3 +7,5 @@ authors = ["Daniel Mason"]
 clap = {version = "^2.27.0", features = ["yaml"]}
 failure = "^0.1.1"
 mysql = "^14.0.0"
+r2d2 = "^0.8.0"
+r2d2_mysql = "^9.0.0"
