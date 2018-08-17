@@ -17,14 +17,27 @@ fn main() {
     match get_affected_columns(&database, &find) {
         Ok(c) => {
             let tc = tables_and_columns(&c);
+            let tables: Vec<String> = tc.keys().map(|table| table.to_string()).collect();
+            let raw_column_size = tables.iter().fold(1, |acc, table| {
+                let len = table.len();
+                if len > acc {
+                    len
+                } else {
+                    acc
+                }
+            });
+            let column_size = raw_column_size + 2;
+            println!("The following columns will be affected\n");
+            println!("{:width$}{}", "TABLE", "COLUMNS", width = column_size);
             for (table, columns) in tc.iter() {
-                println!("{}.{}:", table.table_schema, table.table_name);
-                print!("   ");
-                columns.iter().for_each(|c| print!(" {},", c.column_name));
-                println!();
-                println!();
+                let table_name = table.to_string();
+                let columns_names = columns.iter().map(|column| column.column_name.clone()).collect::<Vec<String>>().join(", ");
+                println!("{:width$}{}", table_name, columns_names, width = column_size);
             }
         }
-        Err(e) => eprintln!("Not OK: {:#?}", e),
+        Err(e) => {
+            eprintln!("Not OK: {:#?}", e);
+            std::process::exit(1);
+        },
     }
 }
