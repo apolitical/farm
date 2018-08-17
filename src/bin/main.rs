@@ -2,7 +2,7 @@
 extern crate clap;
 extern crate mysql_find_and_replace;
 
-use clap::{App};
+use clap::App;
 use mysql_find_and_replace::get_affected_columns;
 use mysql_find_and_replace::model::tables_and_columns;
 
@@ -24,7 +24,7 @@ fn main() {
                 println!();
                 println!();
             }
-        },
+        }
         Err(e) => eprintln!("Not OK: {:#?}", e),
     }
 }
