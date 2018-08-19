@@ -46,3 +46,20 @@ where
 
     Ok(possible_columns)
 }
+
+pub fn replace_in_columns<T, U,V>(database_url: T, columns: Vec<Column>, find: U, replace: V) -> Result<bool>
+where
+    T: AsRef<str>,
+    U: AsRef<str>,
+    V: AsRef<str>,
+{
+    let pool = get_db_connection(database_url)?;
+
+    columns.into_iter().for_each(|c| {
+        let mut con = pool.get().unwrap();
+        c.replace(&mut con, &find, &replace);
+    });
+    // ToDo: Use mysql::Opts to work out schema name.
+
+    Ok(false)
+}

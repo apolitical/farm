@@ -66,12 +66,12 @@ impl Column {
         T: AsRef<str>,
     {
         let query = format!(
-            "SELECT count(*) FROM {}.{} WHERE {} LIKE :find ",
+            "SELECT count(*) FROM {}.{} WHERE {} LIKE :search ",
             self.table_schema, self.table_name, self.column_name,
         );
-        let find = format!("%{}%", find.as_ref());
+        let search = format!("%{}%", find.as_ref());
         let result = conn
-            .prep_exec(query, params! { find })
+            .prep_exec(query, params! { search })
             .map(|result| {
                 result
                     .filter(|row_result| row_result.is_ok())
@@ -83,5 +83,27 @@ impl Column {
                     })
             })?;
         Ok(result)
+    }
+
+    pub fn replace<T, U>(
+        &self,
+        conn: &mut PooledConnection<MysqlConnectionManager>,
+        find: T,
+        replace: U,
+    ) -> bool
+    where
+        T: AsRef<str>,
+        U: AsRef<str>,
+    {
+        let query = format!(
+            "UPDATE {}.{} SET {col} = REPLACE({col}, :find, :replace) WHERE {col} LIKE :search",
+            self.table_schema, self.table_name, col = self.column_name,
+        );
+        let find = find.as_ref();
+        let replace = replace.as_ref();
+        let search = format!("%{}%", find);
+        conn
+            .prep_exec(query, params! { find, replace, search })
+            .is_ok()
     }
 }
