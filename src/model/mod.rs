@@ -18,3 +18,22 @@ pub fn tables_and_columns<'a>(v: &'a Vec<Column>) -> TablesAndColumns<'a> {
     });
     tables_and_columns
 }
+
+pub fn display_tables_and_columns(tables_and_columns: &TablesAndColumns) {
+    let raw_column_size = tables_and_columns.keys().fold(5, |acc, table| { // 5 = "table".len()
+        let len = table.table_schema.len() + table.table_name.len() + 1;
+        if len > acc {
+            len
+        } else {
+            acc
+        }
+    });
+    let column_size = raw_column_size + 2;
+    println!("The following columns will be affected\n");
+    println!("{:width$}{}", "TABLE", "COLUMNS", width = column_size);
+    for (table, columns) in tables_and_columns.iter() {
+        let table_name = table.to_string();
+        let columns_names = columns.iter().map(|column| column.column_name.clone()).collect::<Vec<String>>().join(", ");
+        println!("{:width$}{}", table_name, columns_names, width = column_size);
+    }
+}
