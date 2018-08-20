@@ -25,7 +25,7 @@ fn main() {
                 display_tables_and_columns(&tc);
             }
 
-            println!("");
+            println!();
             println!("You are about to replace \"{}\" with \"{}\"", find, replace);
             println!("Are you sure y/n");
             let mut confirm = String::with_capacity(8);
