@@ -1,10 +1,10 @@
 #[macro_use]
 extern crate clap;
-extern crate mysql_find_and_replace;
+extern crate cuckoo;
 
 use std::io::{self, BufRead};
 use clap::App;
-use mysql_find_and_replace::{
+use cuckoo::{
     get_affected_columns,
     replace_in_columns,
     model::{tables_and_columns, display_tables_and_columns},
@@ -25,6 +25,7 @@ fn main() {
                 display_tables_and_columns(&tc);
             }
 
+            println!("");
             println!("You are about to replace \"{}\" with \"{}\"", find, replace);
             println!("Are you sure y/n");
             let mut confirm = String::with_capacity(8);

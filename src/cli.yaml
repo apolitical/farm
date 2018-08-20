@@ -1,4 +1,4 @@
-name: mysql-find-and-replace
+name: cuckoo
 version: "1.0"
 author: Daniel Mason <engineering@apolitical.co>
 about: Finds and replaces in all columns of all tables in a given database

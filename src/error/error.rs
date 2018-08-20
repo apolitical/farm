@@ -7,6 +7,8 @@ pub enum Error {
     MySqlError(mysql::Error),
     #[fail(display = "R2D2Error: {:#?}", _0)]
     R2D2Error(r2d2::Error),
+    #[fail(display = "You must provide a schema: {}", _0)]
+    SchemaError(String),
 }
 
 impl From<mysql::Error> for Error {
