@@ -32,7 +32,8 @@ fn main() {
             let stdin = io::stdin();
             let _ = stdin.lock().read_line(&mut confirm);
             if confirm.to_lowercase().trim() == "y" {
-                replace_in_columns(&database, c, find, replace);
+                // ToDo: Do something with this
+                let _ = replace_in_columns(&database, c, find, replace);
             } else {
                 eprintln!("Exiting due to user inout");
                 std::process::exit(1);

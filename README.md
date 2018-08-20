@@ -13,3 +13,8 @@ $ cuckoo \
     --find https://apolitical.co \
     --replace http://localhost:8080
 ```
+
+Installation
+------------
+
+Clone this repository and run `cargo install`.
