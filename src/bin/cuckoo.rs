@@ -7,7 +7,7 @@ use clap::App;
 use cuckoo::{
     get_affected_columns,
     replace_in_columns,
-    model::{tables_and_columns, display_tables_and_columns},
+    model::tables_and_columns::TablesAndColumns,
 };
 
 fn main() {
@@ -21,13 +21,14 @@ fn main() {
     match get_affected_columns(&database, &find) {
         Ok(c) => {
             {
-                let tc = tables_and_columns(&c);
-                display_tables_and_columns(&tc);
+                let tc = TablesAndColumns::from_columns(&c);
+                println!("The following columns will be affected");
+                println!("{}", tc);
             }
 
             println!("");
             println!("You are about to replace \"{}\" with \"{}\"", find, replace);
-            println!("Are you sure y/n");
+            println!("Are you sure y/N");
             let mut confirm = String::with_capacity(8);
             let stdin = io::stdin();
             let _ = stdin.lock().read_line(&mut confirm);
