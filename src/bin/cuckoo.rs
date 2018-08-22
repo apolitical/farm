@@ -17,27 +17,30 @@ fn main() {
     let database = matches.value_of("database").unwrap();
     let find = matches.value_of("find").unwrap();
     let replace = matches.value_of("replace").unwrap();
+    let reckless_mode = matches.is_present("yolo");
 
     match get_affected_columns(&database, &find) {
         Ok(c) => {
-            {
+            if !reckless_mode {
+
                 let tc = tables_and_columns(&c);
                 display_tables_and_columns(&tc);
+                std::mem::drop(tc);
+
+                println!();
+                println!("You are about to replace \"{}\" with \"{}\"", find, replace);
+                println!("Are you sure y/n");
+                let mut confirm = String::with_capacity(8);
+                let stdin = io::stdin();
+                let _ = stdin.lock().read_line(&mut confirm);
+                if confirm.to_lowercase().trim() != "y" {
+                    // ToDo: Do something with this
+                    eprintln!("Exiting due to user inout");
+                    std::process::exit(1);
+                }
             }
 
-            println!();
-            println!("You are about to replace \"{}\" with \"{}\"", find, replace);
-            println!("Are you sure y/n");
-            let mut confirm = String::with_capacity(8);
-            let stdin = io::stdin();
-            let _ = stdin.lock().read_line(&mut confirm);
-            if confirm.to_lowercase().trim() == "y" {
-                // ToDo: Do something with this
-                let _ = replace_in_columns(&database, c, find, replace);
-            } else {
-                eprintln!("Exiting due to user inout");
-                std::process::exit(1);
-            }
+            let _ = replace_in_columns(&database, c, find, replace);
         }
         Err(e) => {
             eprintln!("Not OK: {:#?}", e);
