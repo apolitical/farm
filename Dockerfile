@@ -2,7 +2,7 @@ FROM ekidd/rust-musl-builder as builder
 
 COPY Cargo.toml .
 COPY Cargo.lock .
-COPY src src
+COPY src/ src
 
 RUN cargo build --release
 
