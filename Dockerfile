@@ -12,4 +12,4 @@ WORKDIR /app
 
 COPY --from=builder /home/rust/src/target/x86_64-unknown-linux-musl/release/cuckoo /app/cuckoo
 
-CMD cuckoo
+ENTRYPOINT ["/app/cuckoo"]
