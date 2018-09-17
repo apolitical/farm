@@ -1,0 +1,5 @@
+/.idea
+/target
+/.dockerignore
+/.gitignore
+/README.md
