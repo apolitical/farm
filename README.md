@@ -1,6 +1,9 @@
 Cuckoo
 ======
 
+[![GitHub release](https://img.shields.io/github/release/apolitical/farm.svg)](https://github.com/apolitical/farm/releases)
+[![GitHub license](https://img.shields.io/github/license/apolitical/farm.svg)](https://github.com/apolitical/farm/blob/master/LICENSE)
+
 A find and replace tool for MySql. Given a `--find` string, it will find all occurrences within a
 a schema and replace it with a `--replace` string.
 
