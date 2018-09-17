@@ -1,10 +1,10 @@
 #[macro_use]
 extern crate clap;
-extern crate cuckoo;
+extern crate farm;
 
 use std::io::{self, BufRead};
 use clap::App;
-use cuckoo::{
+use farm::{
     get_affected_columns,
     replace_in_columns,
     model::{tables_and_columns, display_tables_and_columns},

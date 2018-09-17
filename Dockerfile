@@ -10,6 +10,6 @@ FROM scratch
 
 WORKDIR /app
 
-COPY --from=builder /home/rust/src/target/x86_64-unknown-linux-musl/release/cuckoo /app/cuckoo
+COPY --from=builder /home/rust/src/target/x86_64-unknown-linux-musl/release/farm /app/farm
 
-ENTRYPOINT ["/app/cuckoo"]
+ENTRYPOINT ["/app/farm"]
