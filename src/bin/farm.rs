@@ -7,7 +7,7 @@ use clap::App;
 use farm::{
     get_affected_columns,
     replace_in_columns,
-    model::{tables_and_columns, display_tables_and_columns},
+    model::tables_and_columns::TablesAndColumns,
 };
 
 fn main() {
@@ -22,10 +22,11 @@ fn main() {
     match get_affected_columns(&database, &find) {
         Ok(c) => {
             if !reckless_mode {
-
-                let tc = tables_and_columns(&c);
-                display_tables_and_columns(&tc);
-                std::mem::drop(tc);
+                {
+                    let tc = TablesAndColumns::from_columns(&c);
+                    println!("The following columns will be affected");
+                    println!("{}", tc);
+                }
 
                 println!();
                 println!("You are about to replace \"{}\" with \"{}\"", find, replace);
