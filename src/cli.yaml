@@ -7,6 +7,7 @@ args:
     short: d
     long: database
     value_name: DATABASE
+    env: DATABASE
     help: A connection string for the database you want to connect to
     takes_value: true
     required: true
@@ -14,6 +15,7 @@ args:
     short: f
     long: find
     value_name: FIND
+    env: FIND
     help: The string to find
     takes_value: true
     required: true
@@ -21,12 +23,14 @@ args:
     short: r
     long: replace
     value_name: REPLACE
+    env: REPLACE
     help: The string to replace with
     takes_value: true
     required: true
 - yolo:
     short: y
     long: yes
+    env: RECKLESS_MODE
     help: Automatically run with no tests or confirmation
     takes_value: false
     required: false
