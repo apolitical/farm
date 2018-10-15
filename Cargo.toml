@@ -1,6 +1,6 @@
 [package]
 name = "farm"
-version = "1.0.0"
+version = "1.1.0"
 authors = ["Daniel Mason"]
 description = "Find And Replace in MySql"
 license = "MIT"
